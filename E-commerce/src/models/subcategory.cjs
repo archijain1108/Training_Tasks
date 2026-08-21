@@ -1,0 +1,33 @@
+'use strict';
+
+module.exports = (sequelize, DataTypes) => {
+
+  const Subcategory = sequelize.define(
+    'Subcategory',
+    {
+      name: {
+        type: DataTypes.STRING,
+        allowNull: false
+      },
+
+      categoryId: {
+        type: DataTypes.UUID,
+        allowNull: false
+      }
+    }
+  );
+
+  Subcategory.associate = (models) => {
+
+    Subcategory.belongsTo(models.Category, {
+      foreignKey: "categoryId"
+    });
+
+    Subcategory.hasMany(models.Product, {
+      foreignKey: "subcategoryId"
+    });
+
+  };
+
+  return Subcategory;
+};
