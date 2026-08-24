@@ -2,49 +2,37 @@
 
 
 module.exports = {
-
   async up(queryInterface, Sequelize) {
-
-    await queryInterface.createTable('Subcategories', {
-
+    await queryInterface.createTable('categories', {
       id: {
         allowNull: false,
         primaryKey: true,
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4
+        type: Sequelize.INTEGER,
+        autoIncrement: true
+      },
+      adminId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'users',
+          key: 'id'
+        },
       },
 
       name: {
         type: Sequelize.STRING,
         allowNull: false
       },
-
-      categoryId: {
-        type: Sequelize.UUID,
-        allowNull: false,
-
-        references: {
-          model: 'Categories',
-          key: 'id'
-        },
-
-        onUpdate: 'CASCADE',
-        onDelete: 'RESTRICT'
-      },
-
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
       },
-
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
       }
     });
   },
-
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Subcategories');
+    await queryInterface.dropTable('categories');
   }
 };

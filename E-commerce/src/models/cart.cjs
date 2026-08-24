@@ -5,7 +5,10 @@
 module.exports = (sequelize, DataTypes) => {
   const Cart = sequelize.define(
     
-    'Cart', {}
+    'Cart', {} , 
+    {
+      tableName : 'carts'
+    }
   );
 
   Cart.associate = (models) => {

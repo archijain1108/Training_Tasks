@@ -6,13 +6,13 @@ module.exports = {
 
   async up(queryInterface, Sequelize) {
 
-    await queryInterface.createTable('Products', {
+    await queryInterface.createTable('products', {
 
       id: {
         allowNull: false,
         primaryKey: true,
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4
+        type: Sequelize.INTEGER,
+        autoIncrement: true
       },
 
       title: {
@@ -38,11 +38,11 @@ module.exports = {
       },
 
       sellerId: {
-        type: Sequelize.UUID,
+        type: Sequelize.INTEGER,
         allowNull: false,
 
         references: {
-          model: 'Users',
+          model: 'users',
           key: 'id'
         },
 
@@ -52,11 +52,11 @@ module.exports = {
 
   
       subcategoryId: {
-        type: Sequelize.UUID,
+        type: Sequelize.INTEGER,
         allowNull: false,
 
         references: {
-          model: 'Subcategories',
+          model: 'subcategories',
           key: 'id'
         },
 
@@ -79,7 +79,7 @@ module.exports = {
 
   async down(queryInterface, Sequelize) {
 
-    await queryInterface.dropTable('Products');
+    await queryInterface.dropTable('products');
 
   }
 

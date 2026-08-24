@@ -1,11 +1,11 @@
-'use strict'
+'use strict';
 
-/** @type {import('sequelize-cli').Migration} */
 
 module.exports = {
+
   async up(queryInterface, Sequelize) {
 
-    await queryInterface.createTable('variants', {
+    await queryInterface.createTable('subcategories', {
 
       id: {
         allowNull: false,
@@ -14,37 +14,22 @@ module.exports = {
         autoIncrement: true
       },
 
-      productId: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-
-        references: {
-          model: 'products',
-          key: 'id'
-        },
-
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
-      },
-
-      color: {
+      name: {
         type: Sequelize.STRING,
         allowNull: false
       },
 
-      attributes: {
-        type: Sequelize.JSONB,
-        allowNull: false
-      },
-
-      stock: {
+      categoryId: {
         type: Sequelize.INTEGER,
-        allowNull: false
-      },
+        allowNull: false,
 
-      price: {
-        type: Sequelize.DECIMAL(8, 2),
-        allowNull: true
+        references: {
+          model: 'categories',
+          key: 'id'
+        },
+
+        onUpdate: 'CASCADE',
+        onDelete: 'RESTRICT'
       },
 
       createdAt: {
@@ -60,9 +45,6 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-
-    await queryInterface.dropTable('variants');
-
+    await queryInterface.dropTable('subcategories');
   }
-
 };

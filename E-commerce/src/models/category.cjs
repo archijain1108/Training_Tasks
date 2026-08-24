@@ -14,6 +14,9 @@ module.exports = (sequelize, DataTypes) => {
         allowNull : false 
       }
     }
+    ,{
+      tableName : 'categories'
+    }
   );
 
   Category.associate = (models) => {

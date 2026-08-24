@@ -1,6 +1,6 @@
 import db from '../models/index.cjs'
 
-const { Product, Variant, Subcategory } = db;
+const { Product, Variant, Subcategory , sequelize } = db;
 
 
 export const createProduct = async (req, res, next) => {
@@ -19,10 +19,7 @@ export const createProduct = async (req, res, next) => {
             );
 
             if (!subcategory) {
-                return res.status(404)
-                    .json({
-                        message: 'This sub-category not exists'
-                    })
+                throw new Error('Sub-category not exists')
             }
 
 
@@ -56,14 +53,13 @@ export const createProduct = async (req, res, next) => {
                 { transaction: t }
             )
 
-            const allVarforResp = []
+            const variantsArr = []
 
-            for (const variant of variants) {
-                for (const v of variant.sizes) {
-
+            for (const v of variants) {
+              
                     const eachVariant = await Variant.create({
                         productId: product.id,
-                        color: variant.color,
+                        color: v.color,
                         price: v.price ?? product.price,
                         stock: v.stock,
                         attributes: v.attributes ?? {}
@@ -71,13 +67,12 @@ export const createProduct = async (req, res, next) => {
                         { transaction: t }
                     )
 
-                    allVarforResp.push(eachVariant)
+                    variantsArr.push(eachVariant)
 
                 }
+        
 
-            }
-
-            return { product, allVarforResp }
+            return { product, variantsArr }
 
         })
 
@@ -87,7 +82,7 @@ export const createProduct = async (req, res, next) => {
                 message: 'product created with its variants',
                 resObj: {
                     product: result.product,
-                    allVarforResp: result.allVarforResp
+                    variants: result.variantsArr
                 }
             })
 
@@ -98,94 +93,86 @@ export const createProduct = async (req, res, next) => {
 
 
 }
-
 
 
 export const addVariant = async (req, res, next) => {
+  const sellerId = req.user.id;
+  const productId = req.params.id;
+  const { variants } = req.body;
+  const uploadedImages = req.files || [];
 
-    const sellerId = req.user.id;
-    const productId = req.params.id;
-    const { variants } = req.body
-    const uploadedImages = req.files
+  try {
+    const result = await sequelize.transaction(async t => {
 
-    try {
+      const product = await Product.findOne({
+        where: {
+          id: productId,
+          sellerId
+        },
+        transaction: t
+      });
 
-        const result = await sequelize.transaction(async t => {
-            const product = await Product.findOne({
-                where: {
-                    id: productId,
-                    sellerId
-                }
-            })
+      if (!product) {
+        return res.status(404).json({
+          message: "Product not found"
+        });
+      }
 
-            if (!product) {
-                return res.status(404)
-                    .json({
-                        message: "product not found",
-                    })
-            }
+      const newVariants = [];
 
+      const imageByColor = {
+        ...(product.imageByColor || {})
+      };
 
-            // create variant and update product imageBycolor
+      for (const v of variants) {
 
-            const newVariants = []
+        const eachVariant = await Variant.create(
+          {
+            productId: product.id,
+            color: v.color,
+            price: v.price ?? product.price,
+            stock: v.stock,
+            attributes: v.attributes ?? {}
+          },
+          {
+            transaction: t
+          }
+        );
 
-            for (const variant of variants) {
-                for (const v of variant.sizes) {
-                    const eachVariant = await Variant.create({
-                        color: variant.color,
-                        productId,
-                        stock: v.stock,
-                        price: v.price ?? variant.price,
-                        attributes: v.attributes ?? {}
-                    }, {
-                        transaction: t
-                    })
+        newVariants.push(eachVariant);
+      }
 
-                    newVariants.push(eachVariant)
-                }
-            }
+      for (const file of uploadedImages) {
+        const color = file.fieldname;
 
+        if (!imageByColor[color]) {
+          imageByColor[color] = [];
+        }
 
-            const imageByColor = {
-                ...product.imageByColor
-            }
+        imageByColor[color].push(file.path);
+      }
 
+      await product.update(
+        {
+          imageByColor
+        },
+        {
+          transaction: t
+        }
+      );
 
-            uploadedImages.forEach((file) => {
-                const col = file.fieldname;
+      return newVariants;
+    });
 
-                if (!imageByColor[col]) {
-                    imageByColor[col] = []
-                }
-                imageByColor[col].push(file.path)
-            })
+    return res.status(201).json({
+      message: "Variant added",
+      newVariants: result
+    });
 
-
-            await product.update({
-                imageByColor
-            },
-                { transaction: t }
-            )
-
-
-            return newVariants
-
-        })
-
-        return res.status(201)
-            .json({
-                message: "Variant added",
-                newVariants: result
-
-            })
-
-    }
-    catch (err) {
-        next(err);
-    }
-
-}
+  } catch (err) {
+    next(err);
+  }
+};
 
 
 
@@ -223,6 +210,7 @@ export const deleteProduct = async (req, res, next) => {
         next(err);
     }
 }
+
 
 export const deleteVariant = async (req, res, next) => {
     try {
@@ -405,7 +393,19 @@ export const getProductDetails = async (req, res, next) => {
     const productId = req.params.id;
     try {
 
-        const product = await Product.findByPk(productId);
+        const product = await Product.findOne({
+            where : {id : productId}, 
+            include : [  {
+                    model: Variant,
+                    attributes: [
+                        "id",
+                        "color",
+                        "price",
+                        "stock",
+                        "attributes"
+                    ]
+                }]
+        });
 
         if (!product) {
             return res.status(404)

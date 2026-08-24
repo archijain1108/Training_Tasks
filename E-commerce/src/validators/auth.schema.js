@@ -20,7 +20,7 @@ export const registerSchema = {
 
     password: {
       type: "string",
-      minLength: 8
+      minLength: 6
     },
 
     role: {
@@ -49,7 +49,7 @@ export const loginSchema = {
 
     password: {
       type: "string",
-      minLength: 8
+      minLength: 6
     }
   },
 

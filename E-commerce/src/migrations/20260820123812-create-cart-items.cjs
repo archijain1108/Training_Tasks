@@ -6,19 +6,19 @@
 
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('CartItems', {
+    await queryInterface.createTable('cartItems', {
       id: {
         allowNull: false,
         primaryKey: true,
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4
+        type: Sequelize.INTEGER,
+        autoIncrement: true
       },
 
       productId: {
-        type: Sequelize.UUID,
+        type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'Products',
+          model: 'products',
           key: 'id'
         },
         onUpdate: 'CASCADE',
@@ -26,10 +26,10 @@ module.exports = {
       },
 
       variantId: {
-        type: Sequelize.UUID,
+        type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'Variants',
+          model: 'variants',
           key: 'id'
         },
         onUpdate: 'CASCADE',
@@ -42,10 +42,10 @@ module.exports = {
       },
 
       cartId: {
-        type: Sequelize.UUID,
+        type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'Carts',
+          model: 'carts',
           key: 'id'
         },
         onUpdate: 'CASCADE',
@@ -64,6 +64,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('CartItems');
+    await queryInterface.dropTable('cartItems');
   }
 };

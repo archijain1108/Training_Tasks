@@ -1,11 +1,12 @@
 import 'dotenv/config'
-import jwt, { decode } from 'jsonwebtoken'
+import jwt from 'jsonwebtoken'
 
 
 export const authMiddleware = (requiredRole) => {
 
     return (req, res, next) => {
-        const token = req.cookies.token;
+        const token = req.cookies.token;        
+
 
         if (!token) {
             return res.status(401)
@@ -17,10 +18,10 @@ export const authMiddleware = (requiredRole) => {
         try {
             const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-            if ( decoded.role != 'admin' && requiredRole  && (decoded.role != requiredRole)) {
-                return res.status(401)
+            if (decoded.role !== 'admin' && requiredRole && (decoded.role !== requiredRole)) {
+                return res.status(403)
                     .json({
-                        message: "Unauthorised"
+                        message: "forbidden"
                     })
             }
 
@@ -33,10 +34,7 @@ export const authMiddleware = (requiredRole) => {
                     message: "Invalid token"
                 })
         }
-
-
     }
-
 }
 
 export default authMiddleware;

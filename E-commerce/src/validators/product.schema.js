@@ -1,45 +1,55 @@
 
 export const variantSchema = {
-  type: "array",
-  minItems: 1,
+  type: "object",
 
-  items: {
-    type: "object",
+  properties: {
+    variants: {
+      type: "array",
+      minItems: 1,
 
-    properties: {
-
-      color: {
-        type: "string",
-        minLength: 3
-      },
-
-      attributes: {
+      items: {
         type: "object",
-        minProperties: 1,
-        additionalProperties: true
-      },
 
-      stock: {
-        type: "integer",
-        minimum: 0
-      },
+        properties: {
+          color: {
+            type: "string",
+            minLength: 3
+          },
 
-      price: {
-        type: "number",
-        minimum: 1
+          attributes: {
+            type: "object",
+            minProperties: 1,
+            additionalProperties: true
+          },
+
+          stock: {
+            type: "integer",
+            minimum: 0
+          },
+
+          price: {
+            type: "number",
+            minimum: 1
+          }
+        },
+
+        required: [
+          "color",
+          "attributes",
+          "stock"
+        ],
+
+        additionalProperties: false
       }
+    }
+  },
 
-    },
+  required: ["variants"],
 
-    required: [
-      "color",
-      "attributes",
-      "stock"
-    ],
-
-    additionalProperties: false
-  }
+  additionalProperties: false
 };
+
+
 
 export const productSchema = {
 

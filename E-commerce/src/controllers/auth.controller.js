@@ -7,13 +7,12 @@ import jwt from 'jsonwebtoken'
 
 // console.log(Object.keys(db));
 // console.log(Op);
-// console.log(config.jwt_secret)
+
 
 
 const {User} = db;
 
-
-const createAndSetToken = ( user ) =>{
+const createAndSetToken = ( user , res ) =>{
 
       const token = jwt.sign(
             {id : user.id , role : user.role},
@@ -31,7 +30,7 @@ const createAndSetToken = ( user ) =>{
 }
 
 
-export const registerUser = async (req , res , err) =>{
+export const registerUser = async (req , res , next) =>{
      const {fullname , email , password , contact, role} = req.body;
 
      try{
@@ -49,7 +48,9 @@ export const registerUser = async (req , res , err) =>{
             })
         }
 
-        const user = await User.create({
+        console.log('user exists - ' , userExists)
+
+        const newUser = await User.create({
             fullname ,
             password,
             email,
@@ -57,9 +58,13 @@ export const registerUser = async (req , res , err) =>{
             role
         })
 
-        createAndSetToken(user);
+        const user = newUser.toJSON()
+        delete user.password;
 
-         // user without password field returned
+
+        createAndSetToken(user , res );
+
+         // user without password field
         return res.status(200)
         .json({
             message : 'user register successfully',
@@ -77,7 +82,7 @@ export const loginUser = async (req , res , next) =>{
 
     try{
 
-        const user = await User.findOne({
+        const user = await User.scope('withPassword').findOne({
             where : {email}
         })
 
@@ -88,7 +93,7 @@ export const loginUser = async (req , res , next) =>{
             })
         }
 
-        const isValidPassword = user.comparePassword(password);
+        const isValidPassword = await user.comparePassword(password);
 
         if(! isValidPassword){
             return res.status(401)
@@ -98,13 +103,12 @@ export const loginUser = async (req , res , next) =>{
         }
 
 
-        createAndSetToken(user)
+        createAndSetToken(user , res)
 
-       // exclude password 
         res.status(200)
         .json({
             message : "user logged in successfully",
-            user
+            // user
         })
 
 
@@ -122,6 +126,8 @@ export const loginUser = async (req , res , next) =>{
 
 export const getMe = async (req , res , next) =>{
     const id = req.user.id;
+    console.log('controller run ');
+    
 
     try{
 
@@ -136,9 +142,10 @@ export const getMe = async (req , res , next) =>{
             })
         }
 
-        res.status(200)
+        return res.status(200)
         .json({
-            message : 'User fetch successfully'
+            message : 'User fetch successfully',
+            user
         })
 
     }catch(err){

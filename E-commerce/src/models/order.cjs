@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
   'Order' , 
   {
     buyerId : {
-      type : DataTypes.UUID,
+      type : DataTypes.INTEGER,
       allowNull : false,
       references : {
         model : 'users',
@@ -35,7 +35,8 @@ module.exports = (sequelize, DataTypes) => {
 
 
   } , {
-    timestamps : true 
+    timestamps : true ,
+    tableName : 'orders'
   }
 
  )

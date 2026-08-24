@@ -14,11 +14,11 @@ const Router = express.Router();
 
 /**
  * @route POST '/api/product/:subcategoryId
- * @body {category , title , desp , price ,  variants ,  productimages }
+ * @body {category , title , desp , price ,  variants , images }
  * @access private (seller)
  */
 
-Router.post('/' ,
+Router.post('/:subcategoryId' ,
      authMiddleware('seller') , 
      upload.any(),
      multerErrorHandler,
@@ -38,6 +38,7 @@ Router.post('/:id/variant' ,
     authMiddleware('seller') , 
     upload.any(),
     multerErrorHandler,
+    formatData,
     validate(variantSchema) , 
     addVariant
 

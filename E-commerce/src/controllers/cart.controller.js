@@ -45,7 +45,7 @@ export const getCart = async (req, res, next) => {
         const itemList = cart.CartItems.map((item) => {
           totalPrice += ( item.Variant.price * item.quantity);
 
-
+          
           return {
               id : item.id,
               title : item.Product.title,
@@ -86,8 +86,7 @@ export const addToCart = async (req, res, next) => {
 
     const buyerId = req.user.id;
     const { productId, variantId } = req.params;
-    const quantity = req.body.quantity|| 1;
-
+    const quantity = req.body?.quantity ?? 1;
 
 
     const variant = await Variant.findOne({
@@ -101,6 +100,8 @@ export const addToCart = async (req, res, next) => {
         }
       ]
     });
+
+    console.log(variant)
 
     if (!variant) {
       return res.status(404).json({

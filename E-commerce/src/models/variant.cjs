@@ -46,6 +46,11 @@ module.exports = (sequelize, DataTypes) => {
           }
         }
       }
+    },
+    {
+      tableName : 'variants',
+        timestamps: true
+
     }
   );
 

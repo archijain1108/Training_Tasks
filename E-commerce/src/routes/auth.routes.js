@@ -30,7 +30,7 @@ Router.post('/login' , validate(loginSchema) , loginUser);
  * @access private
  */
 
-Router.get('/get-me' , authMiddleware , getMe)
+Router.get('/get-me' , authMiddleware() , getMe)
 
 
 /**
@@ -38,7 +38,7 @@ Router.get('/get-me' , authMiddleware , getMe)
  * @access private
  */
 
-Router.post('/logout' , authMiddleware , logoutUser)
+Router.post('/logout' , authMiddleware() , logoutUser)
 
 
 

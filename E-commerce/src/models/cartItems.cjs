@@ -18,6 +18,7 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     {
+      tableName : 'cartItems',
       indexes: [
         {
           unique: true,
