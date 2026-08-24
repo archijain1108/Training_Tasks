@@ -96,9 +96,6 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'buyerId'
     })
 
-    User.hasMany(models.Category, {
-      foreignKey: 'adminId'
-    })
   }
 
 

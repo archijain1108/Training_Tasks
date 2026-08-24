@@ -2,50 +2,35 @@
 
 
 module.exports = (sequelize, DataTypes) => {
- const Order = sequelize.define(
-  'Order' , 
-  {
-    buyerId : {
-      type : DataTypes.INTEGER,
-      allowNull : false,
-      references : {
-        model : 'users',
-        key : 'id'
+
+  const Order = sequelize.define(
+    'Order',
+    {
+      buyerId: {
+        type : DataTypes.INTEGER,
+        allowNull : false 
       },
-       onUpdate: 'CASCADE',
-       onDelete: 'CASCADE'
-    },
-
-    totalAmount : {
-      type : DataTypes.INTEGER,
-      allowNull: false
-    },
-    status : {
-      type : DataTypes.ENUM('confirmed' , 'Delivered' , 'Processing'),
-      allowNull : false,
-      validate : {
-          isIn : {
-            args : ['confirmed' , 'Delivered' , 'Processing'],
-            msg : "order status must be valid"
-          }        
+      totalAmount:{
+        type :  DataTypes.DECIMAL,
+        allowNull : false 
+      },
+      status: {
+        type : DataTypes.ENUM('confirmed', 'processing', 'shipped', 'delivered', 'cancelled'),
+        defaultValue : 'confirmed'
       }
-
     },
+    {
+      timestamps : true ,
+      tableName: 'orders',
+    });
+
+    Order.association= (models) =>{
+      Order.hasMany(models.OrderItem , {
+        ForeignKey : 'orderId'
+      })
+    }
 
 
 
-  } , {
-    timestamps : true ,
-    tableName : 'orders'
-  }
-
- )
-
- Order.associate = (models) => {
-   Order.belongsTo(models.User , {
-    foreignKey : "buyerId"
-   }) 
- }
-
- return Order ;
+  return Order;
 };

@@ -6,6 +6,9 @@ import authRouter from './routes/auth.routes.js'
 import productRouter from './routes/product.routes.js'
 import cartRouter from './routes/cart.routes.js'
 import categoryRouter from './routes/category.routes.js'
+import paymentRouter from './routes/payment.routes.js'
+import orderRouter from './routes/order.routes.js'
+
 
 const app = express()
 app.use(express.json())
@@ -22,7 +25,9 @@ app.use('/api/cart' , cartRouter )
 
 app.use('/api/category' , categoryRouter)
 
+app.use('/api/payment' , paymentRouter)
 
+app.use('/api/order' , orderRouter)
 
 
 app.use(errorHandler)

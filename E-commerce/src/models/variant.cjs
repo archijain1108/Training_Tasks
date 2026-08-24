@@ -33,6 +33,7 @@ module.exports = (sequelize, DataTypes) => {
             args: [0],
             msg: "Stock cannot be negative"
           }
+          
         }
       },
 

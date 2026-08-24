@@ -25,9 +25,7 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: "categoryId"
     });
 
-    Category.belongsTo(models.User, {
-      foreignKey : 'adminId'
-    })
+   
 
   };
 
