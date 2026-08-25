@@ -10,13 +10,6 @@ module.exports = {
         type: Sequelize.INTEGER,
         autoIncrement: true
       },
-      // adminId: {
-      //   type: Sequelize.INTEGER,
-      //   references: {
-      //     model: 'users',
-      //     key: 'id'
-      //   },
-      // },
 
       name: {
         type: Sequelize.STRING,

@@ -5,6 +5,12 @@ export default (sequelize, DataTypes) => {
   const Subcategory = sequelize.define(
     'Subcategory',
     {
+      id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        primaryKey: true,
+        autoIncrement: true
+      },
       name: {
         type: DataTypes.STRING,
         allowNull: false
@@ -16,7 +22,7 @@ export default (sequelize, DataTypes) => {
       }
     },
     {
-      tableName : 'subcategories'
+      tableName: 'subcategories'
     }
   );
 

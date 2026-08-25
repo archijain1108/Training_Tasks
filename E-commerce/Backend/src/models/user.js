@@ -5,6 +5,12 @@ export default (sequelize, DataTypes) => {
   const User = sequelize.define(
     'User',
     {
+      id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        primaryKey: true,
+        autoIncrement: true
+      },
       fullname: {
         type: DataTypes.STRING,
         allowNull: false
@@ -48,7 +54,7 @@ export default (sequelize, DataTypes) => {
         defaultValue: 'buyer',
         validate: {
           isIn: {
-            args: [['buyer', 'seller' , 'admin']],
+            args: [['buyer', 'seller', 'admin']],
             msg: "role can be buyer or seller only"
           }
         }
@@ -59,8 +65,9 @@ export default (sequelize, DataTypes) => {
       timestamps: true,
       tableName: 'users',
       defaultScope: {
-        attributes: { 
-          exclude: ['password'] }
+        attributes: {
+          exclude: ['password']
+        }
       },
 
       scopes: {

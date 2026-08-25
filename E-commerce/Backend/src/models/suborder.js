@@ -1,10 +1,16 @@
 'use strict';
 
 
-export default(sequelize, DataTypes) => {
+export default (sequelize, DataTypes) => {
   const SubOrder = sequelize.define(
     'SubOrder',
     {
+      id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        primaryKey: true,
+        autoIncrement: true
+      },
       orderId: {
         type: DataTypes.INTEGER,
         allowNull: false
@@ -39,10 +45,10 @@ export default(sequelize, DataTypes) => {
       timestamps: true
     });
 
-     SubOrder.association= (models) =>{
-      SubOrder.belongsTo(models.Order , {
-        ForeignKey : 'orderId'
-      })
-    }
+  SubOrder.association = (models) => {
+    SubOrder.belongsTo(models.Order, {
+      ForeignKey: 'orderId'
+    })
+  }
   return SubOrder;
 };

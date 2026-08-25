@@ -1,10 +1,16 @@
 'use strict';
 
-export default(sequelize, DataTypes) => {
+export default (sequelize, DataTypes) => {
 
   const Product = sequelize.define(
     'Product',
     {
+      id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        primaryKey: true,
+        autoIncrement: true
+      },
       title: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -29,7 +35,7 @@ export default(sequelize, DataTypes) => {
         }
       },
 
-      
+
       price: {
         type: DataTypes.DECIMAL(8, 2),
         allowNull: false,
@@ -46,7 +52,7 @@ export default(sequelize, DataTypes) => {
         }
       },
 
-     
+
       imageByColor: {
         type: DataTypes.JSONB,
         allowNull: false
@@ -57,7 +63,7 @@ export default(sequelize, DataTypes) => {
         allowNull: false
       },
 
-     
+
       subcategoryId: {
         type: DataTypes.UUID,
         allowNull: false
@@ -65,26 +71,26 @@ export default(sequelize, DataTypes) => {
     },
     {
       timestamps: true,
-      tableName : 'products'
+      tableName: 'products'
     }
   );
 
 
   Product.associate = (models) => {
 
-    
+
     Product.hasMany(models.Variant, {
       foreignKey: "productId"
     });
 
 
-    
+
     Product.belongsTo(models.User, {
       foreignKey: "sellerId"
     });
 
 
-   
+
     Product.belongsTo(models.Subcategory, {
       foreignKey: "subcategoryId"
     });

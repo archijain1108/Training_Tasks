@@ -1,10 +1,16 @@
 'use strict';
 
-export default(sequelize, DataTypes) => {
+export default (sequelize, DataTypes) => {
 
   const Variant = sequelize.define(
     "Variant",
     {
+      id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        primaryKey: true,
+        autoIncrement: true
+      },
       productId: {
         type: DataTypes.UUID,
         allowNull: false
@@ -33,7 +39,7 @@ export default(sequelize, DataTypes) => {
             args: [0],
             msg: "Stock cannot be negative"
           }
-          
+
         }
       },
 
@@ -49,8 +55,8 @@ export default(sequelize, DataTypes) => {
       }
     },
     {
-      tableName : 'variants',
-        timestamps: true
+      tableName: 'variants',
+      timestamps: true
 
     }
   );

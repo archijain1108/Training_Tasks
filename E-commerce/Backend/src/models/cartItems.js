@@ -3,6 +3,12 @@ export default (sequelize, DataTypes) => {
   const CartItem = sequelize.define(
     "CartItem",
     {
+      id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        primaryKey: true,
+        autoIncrement: true
+      },
       productId: {
         type: DataTypes.UUID,
         allowNull: false
@@ -17,7 +23,7 @@ export default (sequelize, DataTypes) => {
       }
     },
     {
-      tableName : 'cartItems',
+      tableName: 'cartItems',
       indexes: [
         {
           unique: true,

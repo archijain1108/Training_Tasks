@@ -6,29 +6,35 @@ export default (sequelize, DataTypes) => {
   const Order = sequelize.define(
     'Order',
     {
-      buyerId: {
-        type : DataTypes.INTEGER,
-        allowNull : false 
+      id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        primaryKey: true,
+        autoIncrement: true
       },
-      totalAmount:{
-        type :  DataTypes.DECIMAL,
-        allowNull : false 
+      buyerId: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+      },
+      totalAmount: {
+        type: DataTypes.DECIMAL,
+        allowNull: false
       },
       status: {
-        type : DataTypes.ENUM('confirmed', 'processing', 'shipped', 'delivered', 'cancelled'),
-        defaultValue : 'confirmed'
+        type: DataTypes.ENUM('confirmed', 'processing', 'shipped', 'delivered', 'cancelled'),
+        defaultValue: 'confirmed'
       }
     },
     {
-      timestamps : true ,
+      timestamps: true,
       tableName: 'orders',
     });
 
-    Order.association= (models) =>{
-      Order.hasMany(models.OrderItem , {
-        ForeignKey : 'orderId'
-      })
-    }
+  Order.association = (models) => {
+    Order.hasMany(models.OrderItem, {
+      ForeignKey: 'orderId'
+    })
+  }
 
 
 
