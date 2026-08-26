@@ -1,7 +1,7 @@
 const formatProductData = (req, res, next) => {
   try {
 
-       console.log("BODY:", req.body);
+    console.log("BODY:", req.body);
     console.log("VARIANTS:", req.body.variants);
     console.log("TYPE:", typeof req.body.variants);
 
@@ -13,7 +13,7 @@ const formatProductData = (req, res, next) => {
     if (req.body.variants) {
       req.body.variants = JSON.parse(req.body.variants);
     }
-
+    
      req.body.variants = req.body.variants.map(variant => ({
         ...variant,
         stock: Number(variant.stock),
@@ -21,6 +21,8 @@ const formatProductData = (req, res, next) => {
           ? Number(variant.price)
           : undefined
       }));
+
+       console.log("----------------------" , req.body)
 
    
     next();

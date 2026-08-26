@@ -7,6 +7,8 @@ export const createProduct = async (req, res, next) => {
 
     try {
 
+        console.log('create product controller run..........')
+
         const result = await sequelize.transaction(async t => {
 
             const { title, description, price, variants } = req.body;
@@ -76,7 +78,7 @@ export const createProduct = async (req, res, next) => {
 
         })
 
-
+        
         return res.status(201)
             .json({
                 message: 'product created with its variants',

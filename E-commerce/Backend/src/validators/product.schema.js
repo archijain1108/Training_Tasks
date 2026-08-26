@@ -1,6 +1,4 @@
-
 export const variantSchema = {
-  type: "object",
 
   properties: {
     variants: {
@@ -40,7 +38,7 @@ export const variantSchema = {
         ],
 
         additionalProperties: false
-      }
+      },
     }
   },
 
@@ -75,7 +73,7 @@ export const productSchema = {
 
 
 
-    variants: variantSchema
+    variants: variantSchema.properties.variants
 
   },
 
