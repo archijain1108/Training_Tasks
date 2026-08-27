@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Parking Management System</title>
+
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <header>
+      <h1>Parking Management System</h1>
+
+      <p id="description">
+        Vehicles are first assigned to their dedicated parking area. If the
+        dedicated area is full, the system automatically uses the smallest
+        suitable flexible space.
+      </p>
+
+      <div class="parking-rules">
+        <div class="rule">
+          <strong>Dedicated Space</strong>
+          <span>2W - 2 units</span>
+          <span>4W - 4 units</span>
+          <span>6W - 6 units</span>
+        </div>
+
+        <div class="rule">
+          <strong>Flexible Space</strong>
+          <span>Shared by all vehicle types</span>
+          <span>Best-fit allocation</span>
+        </div>
+      </div>
+    </header>
+
+    <section class="parking-summary">
+      <div class="summary-card">
+        <h3>Total Positions</h3>
+        <p id="totalPositions"></p>
+      </div>
+
+      <div class="summary-card">
+        <h3>Occupied Positions</h3>
+        <p id="occupiedPositions"></p>
+      </div>
+
+      <div class="summary-card">
+        <h3>Available Positions</h3>
+        <p id="availablePositions"></p>
+      </div>
+
+      <div class="summary-card">
+        <h3>Flexible Space</h3>
+
+        <p id="flexibleSpace">80 units</p>
+
+      </div>
+    </section>
+    <section class="parking-panel">
+      <h2>Park Vehicle</h2>
+
+      <div class="form-group">
+        <label for="vehicleNumber"> Vehicle Number </label>
+
+        <input
+          type="text"
+          id="vehicleNumber"
+          placeholder="Enter vehicle number"
+        />
+      </div>
+
+      <div class="form-group">
+        <label> Vehicle Type </label>
+
+        <div class="vehicle-type-buttons">
+          <button type="button" class="vehicle-type" data-category="2-Wheeler">
+            2-Wheeler
+          </button>
+
+          <button type="button" class="vehicle-type" data-category="4-Wheeler">
+            4-Wheeler
+          </button>
+
+          <button type="button" class="vehicle-type" data-category="6-Wheeler">
+            6-Wheeler
+          </button>
+        </div>
+      </div>
+
+      <button type="button" id="parkBtn">Park Vehicle</button>
+
+      <p id="parkMessage"></p>
+    </section>
+
+    <section class="parking-panel">
+      <h2>Parking Area</h2>
+
+      <div class="parking-section">
+        <h3>2-Wheeler Parking</h3>
+
+        <div id="twoWheelerSlots" class="parking-grid"></div>
+      </div>
+
+      <div class="parking-section">
+        <h3>4-Wheeler Parking</h3>
+
+        <div id="fourWheelerSlots" class="parking-grid"></div>
+      </div>
+
+      <div class="parking-section">
+        <h3>6-Wheeler Parking</h3>
+
+        <div id="sixWheelerSlots" class="parking-grid"></div>
+      </div>
+
+      <div class="parking-section">
+        <h3>Flexible Parking</h3>
+
+        <div id="flexibleSlots" class="parking-grid"></div>
+      </div>
+    </section>
+
+    <section class="parking-panel">
+      <form id="exitForm">
+        <label for="exitVehicleNumber"> Vehicle Number </label>
+
+        <input
+          type="text"
+          id="exitVehicleNumber"
+          placeholder="Enter vehicle number"
+          required
+        />
+
+        <button type="submit" id="exitBtn">Exit Vehicle</button>
+
+        <p id="exitMessage"></p>
+      </form>
+    </section>
+
+    <section class="parking-panel">
+      <h2>Currently Parked Vehicles</h2>
+
+      <div id="vehicleList"></div>
+    </section>
+
+    <script src="script.js"></script>
+    <script src="dom.js"></script>
+  </body>
+</html>
