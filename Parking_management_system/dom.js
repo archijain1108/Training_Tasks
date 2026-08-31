@@ -1,86 +1,101 @@
-const totalPosition = document.querySelector('#totalPositions')
-const occupiedPositions = document.querySelector('#occupiedPositions')
-const availablePositions = document.querySelector('#availablePositions')
+function showToast(message) {
+    console.log('toast - ' , message)
+    const toast = document.createElement('div')
 
-totalPosition.innerText = parkingVehicles.getTotalSlots()
-occupiedPositions.innerText = parkingVehicles.getOccupiedCount()
-availablePositions.innerText = parkingVehicles.getAvailableCount()
+    const p = document.createElement('p')
+    p.innerText = message;
+
+    toast.appendChild(p)
+    toast.classList.add('show_toast')
+
+    document.body.appendChild(toast)
+
+    setTimeout(() => {
+        toast.remove()
+    }, 2000)
+}
 
 
-const vehicleNo = document.getElementById('vehicleNumber')
+function getDashboardData() {
+    const totalPosition = document.querySelector('#totalPositions')
+    const occupiedPositions = document.querySelector('#occupiedPositions')
+    const availablePositions = document.querySelector('#availablePositions')
+
+    totalPosition.innerText = parkingVehicles.getTotalSlots()
+    occupiedPositions.innerText = parkingVehicles.getOccupiedCount()
+    availablePositions.innerText = parkingVehicles.getAvailableCount()
+
+    renderParkingArea()
+}
+
 const vehicleTypeButtons = document.getElementsByClassName('vehicle-type')
 
-const ParkBtn = document.getElementById('parkBtn')
-const parkMessage = document.getElementById('parkMessage')
+    Array.from(vehicleTypeButtons).forEach(button => {
+        button.addEventListener("click", () => {
+            selectedCategory = button.dataset.category;
+        });
 
-
-
-const twoWheelerContainer = document.getElementById("twoWheelerSlots");
-const fourWheelerContainer = document.getElementById("fourWheelerSlots");
-const sixWheelerContainer = document.getElementById("sixWheelerSlots");
-const flexibleContainer = document.getElementById("flexibleSlots");
-
-
-console.log(twoWheelerContainer, fourWheelerContainer)
-
-
-console.log(vehicleTypeButtons)
-
-
-Array.from(vehicleTypeButtons).forEach(button => {
-    button.addEventListener("click", () => {
-        selectedCategory = button.dataset.category;
     });
 
-});
 
 
-ParkBtn.addEventListener('click', () => {
-
-    const vn = vehicleNo.value.trim();
-
-
-    if (!vn) {
-        parkMessage.textContent =
-            "Please enter vehicle number";
-        return;
-    }
+function manageNewVehicle() {
+    const ParkBtn = document.getElementById('parkBtn')
+    
+    ParkBtn.addEventListener('click', () => {
+        const vehicleNo = document.getElementById('vehicleNumber')
+        const parkMessage = document.getElementById('parkMessage')
 
 
-    if (!selectedCategory) {
-        parkMessage.textContent =
-            "Please select vehicle type";
-        return;
-    }
+
+        const vn = vehicleNo.value.trim();
 
 
-    const vehicle = new Vehicle(vn, selectedCategory);
-    console.log("New vehicle:", vehicle);
+        if (!vn) {
+            parkMessage.textContent =
+                "Please enter vehicle number";
+            return;
+        }
 
 
-    const result = parkingVehicles.parkVehicle(vehicle);
-
-    parkMessage.textContent = result.message;
-
-
-    if (result.success) {
-        renderParkingArea();
-        renderVehicleList();
-
-        totalPosition.innerText = parkingVehicles.getTotalSlots();
-        occupiedPositions.innerText = parkingVehicles.getOccupiedCount();
-        availablePositions.innerText = parkingVehicles.getAvailableCount();
+        if (!selectedCategory) {
+            parkMessage.textContent =
+                "Please select vehicle type";
+            return;
+        }
 
 
-        vehicleNo.value = "";
-        selectedCategory = null;
-    }
-
-});
+        const vehicle = new Vehicle(vn, selectedCategory);
+        console.log("New vehicle:", vehicle);
 
 
+        const result = parkingVehicles.parkVehicle(vehicle);
+
+        parkMessage.textContent = result.message;
+
+
+        if (result.success) {
+            renderVehicleList();
+            getDashboardData()
+
+            showToast('Vehicle parked successfully')
+
+            vehicleNo.value = "";
+            selectedCategory = null;
+        }
+
+    });
+
+    renderParkingArea()
+
+}
 
 function renderParkingArea() {
+
+    const twoWheelerContainer = document.getElementById("twoWheelerSlots");
+    const fourWheelerContainer = document.getElementById("fourWheelerSlots");
+    const sixWheelerContainer = document.getElementById("sixWheelerSlots");
+    const flexibleContainer = document.getElementById("flexibleSlots");
 
     twoWheelerContainer.innerHTML = "";
     fourWheelerContainer.innerHTML = "";
@@ -91,15 +106,13 @@ function renderParkingArea() {
 
     parkingVehicles.slots.forEach(slot => {
 
-        const slotElement =
-            document.createElement("div");
+        const slotElement = document.createElement("div");
 
         slotElement.classList.add("parking-slot");
 
         slotElement.classList.add(
             slot.isOccupied ? "occupied" : "free"
-        );
-
+        )
 
 
         const slotId = document.createElement("span");
@@ -107,17 +120,14 @@ function renderParkingArea() {
         slotId.textContent = slot.id;
 
 
-
-        const vehicleNumber =
-            document.createElement("span");
+        const vehicleNumber = document.createElement("span");
 
         vehicleNumber.classList.add("vehicle-number");
 
         vehicleNumber.textContent =
             slot.isOccupied
                 ? slot.vehicle.vehicleNumber
-                : "FREE";
-
+                : "Free";
 
 
         slotElement.appendChild(slotId);
@@ -193,45 +203,8 @@ function renderParkingArea() {
 }
 
 
-renderParkingArea();
-
-
-
-
-const exitForm = document.getElementById("exitForm");
-const exitVehicleNumber = document.getElementById("exitVehicleNumber");
-const exitMessage = document.getElementById("exitMessage");
-const vehicleList = document.getElementById("vehicleList");
-const exitVehicleBtn = document.getElementById("exitBtn")
-
-exitForm.addEventListener('submit', (e) => {
-
-    e.preventDefault()
-    const vn = exitVehicleNumber.value.trim()
-
-
-    if (!vn) {
-        exitMessage.textContent =
-            "Please enter vehicle number";
-        return;
-    }
-
-    const result = parkingVehicles.removeVehicle(vn);
-    exitMessage.textContent = result.message;
-
-
-    if (result.success) {
-        console.log('rem vehicles')
-        renderParkingArea();
-        renderVehicleList()
-        exitVehicleNumber.value = "";
-    }
-
-})
-
-
 function renderVehicleList() {
-
+    const vehicleList = document.getElementById("vehicleList");
     vehicleList.innerHTML = "";
 
     parkingVehicles.vehicles.forEach(vehicle => {
@@ -241,11 +214,11 @@ function renderVehicleList() {
 
 
         const vNumber = document.createElement("p");
-        vNumber.textContent =  `Vehicle Number: ${vehicle.vehicleNumber}`;
+        vNumber.textContent = `Vehicle Number: ${vehicle.vehicleNumber}`;
 
 
         const vCategory = document.createElement("p");
-        vCategory.textContent =`Type: ${vehicle.category}`;
+        vCategory.textContent = `Type: ${vehicle.category}`;
 
 
         vehicleCard.appendChild(vNumber);
@@ -256,6 +229,42 @@ function renderVehicleList() {
 }
 
 
-renderVehicleList()
+function manageExitVehicle() {
+
+    const exitForm = document.getElementById("exitForm");
+
+    exitForm.addEventListener('submit', (e) => {
+
+        const exitVehicleNumber = document.getElementById("exitVehicleNumber");
+        const exitMessage = document.getElementById("exitMessage");
+
+        e.preventDefault()
+        const vn = exitVehicleNumber.value.trim()
 
 
+        if (!vn) {
+            exitMessage.textContent =
+                "Please enter vehicle number";
+            return;
+        }
+
+        const result = parkingVehicles.removeVehicle(vn);
+        exitMessage.textContent = result.message;
+
+
+        if (result.success) {
+            showToast('Vehicle exit successfully')
+            renderParkingArea();
+            renderVehicleList()
+            exitVehicleNumber.value = "";
+        }
+
+    })
+
+}
+
+
+
+getDashboardData()
+manageNewVehicle()
+manageExitVehicle()

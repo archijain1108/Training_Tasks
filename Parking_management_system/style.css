@@ -237,16 +237,25 @@ header  #description{
 
 .vehicle-card {
     border: 1px solid #ddd;
-
     border-radius: 4px;
-
     padding: 12px;
-
     background: #fafafa;
 }
 
 .vehicle-card p {
     margin-bottom: 6px;
+}
+
+.show_toast {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    background: #f1f4f1;
+    font-weight: bold;
+    color: rgb(54, 162, 40);
+    padding: 12px 15px;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 
