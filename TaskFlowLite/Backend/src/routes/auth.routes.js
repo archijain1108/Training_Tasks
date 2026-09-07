@@ -1,5 +1,5 @@
 import express from 'express'
-import { registerUser , loginUser , logoutUser } from '../controllers/auth.controllers.js'
+import { registerUser , loginUser , logoutUser , getMe } from '../controllers/auth.controllers.js'
 import authMiddleware from '../middlewares/auth.middleware.js'
 import validate from '../middlewares/validate.js'
 import { registerSchema , loginSchema } from '../validators/auth.schema.js'
@@ -30,4 +30,11 @@ router.post('/login' , validate(loginSchema) , loginUser)
 router.post('/logout' , authMiddleware , logoutUser)
 
 
-export default Router
+/**
+ * @route GET /api/auth/get-me
+ * @access protected 
+ */
+
+router.get('/getMe' , authMiddleware , getMe)
+
+export default router

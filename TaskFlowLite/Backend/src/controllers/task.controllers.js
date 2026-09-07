@@ -2,13 +2,12 @@ import db from '../models/index.js';
 const { Task } = db;
 
 export const createTask = async (req, res, next) => {
-    const { title, description, status, priority, dueDate } = req.body;
+    const { title, description, priority, dueDate } = req.body;
 
     try {
         const task = await Task.create({
             title,
             description,
-            status,
             priority,
             dueDate,
             userId: req.user.id
@@ -81,11 +80,10 @@ export const getFilteredTasks = async (req, res, next) => {
 export const getTaskById = async (req, res, next) => {
 
     try{
-        const taskID = req.params.id
 
         const task = await Task.findOne({
             where : {
-                id : taskID,
+                id : req.params.taskId,
                 userId : req.user.id
             }
         })
@@ -112,11 +110,11 @@ export const getTaskById = async (req, res, next) => {
 
 export const updateTask = async (req, res, next) => {
     try{
-        const taskId = req.params.id
+       
 
         const task = await Task.findOne({
             where : {
-                id : taskId,
+                id : req.params.taskId,
                 userId : req.user.id
             }
         })
@@ -151,11 +149,10 @@ export const updateTask = async (req, res, next) => {
 
 export const deleteTask = async (req, res, next) => {
 
-    const taskId = req.params.id
     try{
         const task = await Task.findOne({
             where : {
-                id : taskId,
+                id : req.params.taskId,
                 userId : req.user.id
             }
         })
@@ -178,6 +175,41 @@ export const deleteTask = async (req, res, next) => {
 }
 
 
+export const updateTaskStatus = async ( req , res , next) => {
+    try{
+        const id = req.params.taskId
+        const {status} = req.body
+
+        const task = await Task.findOne({
+            where : {
+                id ,
+                userId : req.user.id
+            }
+        })
+
+        if(!task){
+            return res.status(400)
+            .json({
+                message : 'task not found'
+            })
+        }
+
+        task.status = status
+        await task.save();
+
+
+        return res.status(200)
+        .json({
+            message : 'task status updated successfully',
+            updatedStatus : task.status
+        })
+
+
+    }
+    catch(err){
+        next(err)
+    }
+}
 
 
 

@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+*{
+  box-sizing: border-box;
+  font-family: system-ui;
+  /* background: #181818; */
+}
+
+.hide-scrollbar {
+  scrollbar-width: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}

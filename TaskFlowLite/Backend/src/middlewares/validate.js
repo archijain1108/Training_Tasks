@@ -1,11 +1,11 @@
 import ajv from '../../utils/ajv.js'
 
 const validate = (schema) => {
+  
 
-    return (req, res, next) => {
+    return (req, res, next) => {  
         const validate = ajv.compile(schema)
         const valid = validate(req.body)
-
         
         if (!valid) {
             const errors = validate.errors.map((error) => {

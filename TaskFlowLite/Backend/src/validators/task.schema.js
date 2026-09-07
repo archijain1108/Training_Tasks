@@ -1,16 +1,17 @@
+
 export const createTaskSchema = {
    type: 'object',
 
    properties : {
       'title' : {
             type : 'string',
-            minlength : 3,
-            maxlength : 100
+            minLength : 3,
+            maxLength : 100
       },
       description : {
             type : 'string',
-            minlength : 6,
-            maxlength : 100
+            minLength : 6,
+            maxLength : 100
        },
 
     status : {
@@ -25,11 +26,11 @@ export const createTaskSchema = {
 
     dueDate : {
         type : 'string',
-        format : 'date'
+        format : 'date',
+        futureDate : true
     }
    },
-   required : ['title' , 'description' , 'status' , 'priority' , 'dueDate'],
-   additionalProperties : false
+   required : ['title' , 'description' , 'dueDate'],
 
 }
 
@@ -40,13 +41,13 @@ export const updateTaskSchema = {
     properties : {
         title : {
             type : 'string',
-            minlength : 3,
-            maxlength : 100
+            minLength : 3,
+            maxLength : 100
         },
         description : {
             type : 'string',
-            minlength : 6,
-            maxlength : 100
+            minLength : 6,
+            maxLength : 100
         },
 
         status : {
@@ -61,7 +62,8 @@ export const updateTaskSchema = {
 
         dueDate : {
             type : 'string',
-            format : 'date'
+            format : 'date',
+            futureDate : true
         }
     },
     additionalProperties : false,

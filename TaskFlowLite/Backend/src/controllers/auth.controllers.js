@@ -16,7 +16,7 @@ function generateToken(user, res) {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
         sameSite: 'strict',
-        maxAge: 60 * 60 * 1000 * 24 
+        expiresIn: "7d"
     })
 
 }
@@ -26,15 +26,15 @@ function generateToken(user, res) {
 export const registerUser = async (req, res, next) => {
     try {
         const { email, password, username } = req.body
-        console.log(email , password , username)
+        console.log(email, password, username)
 
         const UserExists = await User.findOne({
             where: {
-            [Op.or] : ([
-                { email: email },
-                { username: username }
-            ])
-          }
+                [Op.or]: ([
+                    { email: email },
+                    { username: username }
+                ])
+            }
         })
 
         if (UserExists) {
@@ -103,11 +103,35 @@ export const loginUser = async (req, res, next) => {
         })
     }
     catch (err) {
-        next({err})
+        next({ err })
     }
 
 }
 
+
+export const getMe = async (req, res, next) => {
+    try {
+        const user = await User.findByPk(req.user.id, {
+            attributes: { exclude: ['password'] }
+        })
+
+        if (!user) {
+            return res.status(404)
+                .json({
+                    message: 'user not found'
+                })
+        }
+
+        return res.status(200)
+            .json({
+                message: 'user fetch successfully',
+                user
+            })
+    }
+    catch (err) {
+        next(err)
+    }
+}
 
 
 

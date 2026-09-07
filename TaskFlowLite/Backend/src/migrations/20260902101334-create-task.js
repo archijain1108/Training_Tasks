@@ -37,7 +37,7 @@ export default {
         allowNull: false
       },
       dueDate: {
-        type: Sequelize.DATE,
+        type: Sequelize.DATEONLY,
         allowNull: false
       },
       createdAt: {
