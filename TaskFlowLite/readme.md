@@ -6,6 +6,8 @@ TaskFlowLite is a full-stack task management application. Authenticated users ca
 
 The frontend provides registration, login, logout, task forms, task cards, loading states, and protected dashboard navigation. The backend exposes an Express API, validates request bodies, persists users and tasks with Sequelize, and restricts task queries and mutations to the authenticated user.
 
+[Live Link](https://training-tasks-beta.vercel.app/)
+
 ## Features
 
 - User registration with unique username and email checks.
@@ -280,20 +282,3 @@ cd Frontend
 npm run lint
 npm run build
 ```
-
-## Deployment
-
-No deployment platform, container, hosting configuration, CI workflow, or production start command is included in the repository. Deployment would therefore require configuring the Node backend, built Vite frontend, PostgreSQL database, environment variables, and cookie/CORS settings for the target environment.
-
-## Future Improvements
-
-The following are potential improvements based on the current implementation and are not currently implemented:
-
-- Add automated backend and frontend tests.
-- Add a production backend start script and deployment configuration.
-- Add migrations for any future schema changes and seed data if needed.
-- Add pagination, filtering, or search for larger task lists.
-- Add confirmation and user feedback around task deletion and API failures.
-- Add a dedicated route guard instead of navigating during dashboard render.
-- Align frontend and backend task validation limits and response handling.
-- Add stronger production cookie settings and a documented secret-management process.
